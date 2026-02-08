@@ -1,0 +1,32 @@
+name: Selenium CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      - name: Run Selenium tests
+        env:
+          CI: true
+          BASE_URL_ICE: ${{ secrets.BASE_URL_ICE }}
+          USER_NAME_ICE: ${{ secrets.USER_NAME_ICE }}
+          PASSWORD_ICE: ${{ secrets.PASSWORD_ICE }}
+        run: mvn clean test -Dtest=IceTestFixture
+        
