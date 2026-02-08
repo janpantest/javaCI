@@ -5,45 +5,59 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+
+import java.time.Duration;
 
 public class TestFixtureIce {
 
-    WebDriver driver;
-    String username;
-    String password;
-    String baseUrl;
+    private WebDriver driver;
+    private String username;
+    private String password;
+    private String baseUrl;
 
-    // Method for initializing the WebDriver and other setup tasks
     public WebDriver setUp() {
-        // String url = "https://icehrmpro.gamonoid.com/login.php?";
+        // Load env vars (.env locally, GitHub Secrets in CI)
+        Dotenv dotenv = Dotenv.configure()
+                .ignoreIfMissing()
+                .load();
 
-        // WebDriverManager.edgedriver().setup(); // Manage WebDriver binary for Edge
-        WebDriverManager.chromedriver().setup();
-        // driver = new EdgeDriver();
-        driver = new FirefoxDriver();
+        baseUrl = dotenv.get("BASE_URL_ICE", System.getenv("BASE_URL_ICE"));
+        username = dotenv.get("USER_NAME_ICE", System.getenv("USER_NAME_ICE"));
+        password = dotenv.get("PASSWORD_ICE", System.getenv("PASSWORD_ICE"));
+
+        // Detect CI environment
+        boolean isCI = "true".equalsIgnoreCase(System.getenv("CI"));
+
+        // Browser options MUST be set before driver creation
+        FirefoxOptions options = new FirefoxOptions();
+
+        if (isCI) {
+            options.addArguments("--headless");
+            options.addArguments("--width=1920");
+            options.addArguments("--height=1080");
+        }
+
+        // Setup and create driver
+        WebDriverManager.firefoxdriver().setup();
+        driver = new FirefoxDriver(options);
+
+        // Selenium best practices
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(0));
         driver.manage().window().maximize();
 
-        Dotenv dotenv = Dotenv.configure().load(); 
-        baseUrl = dotenv.get("BASE_URL_ICE");
-        username = dotenv.get("USER_NAME_ICE");
-        password = dotenv.get("PASSWORD_ICE");
+        // Navigate to app
         driver.get(baseUrl);
 
         return driver;
     }
 
-    // Cleanup method to quit the driver after tests
     public void tearDown() {
         if (driver != null) {
             driver.quit();
         }
     }
 
-    // Getter methods for easy access in tests
-    public WebDriver getDriver() {
-        return driver;
-    }
-    
     public String getUsername() {
         return username;
     }
