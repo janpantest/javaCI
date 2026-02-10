@@ -29,9 +29,7 @@ public class IceTest {
 
         WebDriverManager.chromedriver().setup();
 
-        // Create a new instance of Chrome driver
         driver = new FirefoxDriver();
-        // driver = new EdgeDriver();
         driver.manage().window().maximize();
         driver.get(url);
 
