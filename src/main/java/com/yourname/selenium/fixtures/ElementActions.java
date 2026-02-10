@@ -12,7 +12,6 @@ public class ElementActions {
     private final WebDriverWait wait;
 
     public ElementActions(WebDriver driver) {
-        // this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 

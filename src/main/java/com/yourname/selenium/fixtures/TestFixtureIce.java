@@ -17,7 +17,6 @@ public class TestFixtureIce {
     private String baseUrl;
 
     public WebDriver setUp() {
-        // Load env vars (.env locally, GitHub Secrets in CI)
         Dotenv dotenv = Dotenv.configure()
                 .ignoreIfMissing()
                 .load();
@@ -29,7 +28,6 @@ public class TestFixtureIce {
         // Detect CI environment
         boolean isCI = "true".equalsIgnoreCase(System.getenv("CI"));
 
-        // Browser options MUST be set before driver creation
         FirefoxOptions options = new FirefoxOptions();
 
         if (isCI) {
@@ -42,7 +40,6 @@ public class TestFixtureIce {
         WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver(options);
 
-        // Selenium best practices
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(0));
         driver.manage().window().maximize();
 

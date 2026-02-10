@@ -4,14 +4,10 @@ import com.yourname.selenium.fixtures.TestFixtureIce;
 import com.yourname.selenium.pages.IceHome;
 import com.yourname.selenium.pages.IceLogin;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-// import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-
-// import static org.junit.Assert.assertTrue;
 
 public class IceTestFixture {
 
