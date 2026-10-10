@@ -25,6 +25,18 @@ public class TestFixture {
         password = getConfig("PASSWORD", dotenv);
         cartTitle = "Your Cart";
 
+        // Detect CI environment
+        boolean isCI = "true".equalsIgnoreCase(System.getenv("CI"));
+
+        FirefoxOptions options = new FirefoxOptions();
+
+        if (isCI) {
+            options.addArguments("--headless");
+            options.addArguments("--width=1920");
+            options.addArguments("--height=1080");
+        }
+
+
         WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
@@ -33,24 +45,24 @@ public class TestFixture {
         return driver;
     }
 
-    private String getConfig(String key, Dotenv dotenv) {
-        // Environment variables take priority in GitHub Actions.
-        String value = System.getenv(key);
+    // private String getConfig(String key, Dotenv dotenv) {
+    //     // Environment variables take priority in GitHub Actions.
+    //     String value = System.getenv(key);
 
-        // Fall back to .env for local development.
-        if (value == null || value.isBlank()) {
-            value = dotenv.get(key);
-        }
+    //     // Fall back to .env for local development.
+    //     if (value == null || value.isBlank()) {
+    //         value = dotenv.get(key);
+    //     }
 
-        if (value == null || value.isBlank()) {
-            throw new IllegalStateException(
-                    "Missing configuration: " + key
-                    + ". Set it in GitHub Actions Secrets or your local .env file."
-            );
-        }
+    //     if (value == null || value.isBlank()) {
+    //         throw new IllegalStateException(
+    //                 "Missing configuration: " + key
+    //                 + ". Set it in GitHub Actions Secrets or your local .env file."
+    //         );
+    //     }
 
-        return value;
-    }
+    //     return value;
+    // }
 
     public void tearDown() {
         if (driver != null) {
