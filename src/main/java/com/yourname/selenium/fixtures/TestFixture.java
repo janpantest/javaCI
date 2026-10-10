@@ -16,20 +16,19 @@ public class TestFixture {
 
     // Method for initializing the WebDriver and other setup tasks
     public WebDriver setUp() {
-        String url = "https://www.saucedemo.com";
-
-        // WebDriverManager.edgedriver().setup(); // Manage WebDriver binary for Edge
-        WebDriverManager.chromedriver().setup();
-        // driver = new EdgeDriver();
-        driver = new FirefoxDriver();
-        driver.manage().window().maximize();
-        driver.get(url);
-
+        // String url = "https://www.saucedemo.com";
+        
         Dotenv dotenv = Dotenv.configure().load(); 
         baseUrl = dotenv.get("BASE_URL");
         username = dotenv.get("USER_NAME");
         password = dotenv.get("PASSWORD");
         cartTitle = "Your Cart";
+
+        // WebDriverManager.edgedriver().setup(); // Manage WebDriver binary for Edge
+        WebDriverManager.firefoxdriver().setup();        // driver = new EdgeDriver();
+        driver = new FirefoxDriver();
+        driver.manage().window().maximize();
+        driver.get(baseUrl);
 
         return driver;
     }
