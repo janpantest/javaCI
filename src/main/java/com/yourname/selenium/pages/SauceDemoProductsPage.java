@@ -58,12 +58,12 @@ public class SauceDemoProductsPage {
         new WebDriverWait(driver, Duration.ofSeconds(15))
             .until(ExpectedConditions.visibilityOf(title));
 
-        System.out.println("Title is visible: " + title.getText());
+        // System.out.println("Title is visible: " + title.getText());
         return title.isDisplayed() && addToBasket.get(0).isDisplayed();
     }
 
     public void addFirstProductToBasket() {
-        System.out.println("Number of products available to add to basket: " + addToBasket.size());
+        // System.out.println("Number of products available to add to basket: " + addToBasket.size());
         if (addToBasket.size() > 1) {
             addToBasket.get(0).click();
         }
@@ -73,7 +73,7 @@ public class SauceDemoProductsPage {
         new WebDriverWait(driver, Duration.ofSeconds(5))
             .until(ExpectedConditions.visibilityOf(removeButton));
 
-        System.out.println("Remove button is visible: " + removeButton.getText());
+        // System.out.println("Remove button is visible: " + removeButton.getText());
         return removeButton.isDisplayed();
     }
 
@@ -81,7 +81,7 @@ public class SauceDemoProductsPage {
         new WebDriverWait(driver, Duration.ofSeconds(5))
             .until(ExpectedConditions.visibilityOf(cartBadge));
 
-        System.out.println("Cart badge is visible: " + cartBadge.getText());
+        // System.out.println("Cart badge is visible: " + cartBadge.getText());
         return cartBadge.isDisplayed();
     }
 
@@ -91,7 +91,7 @@ public class SauceDemoProductsPage {
 
     public String getProductText() {
         if (product != null && product.size() > 0) {
-            System.out.println("First product text: " + product.get(0).getText());
+            // System.out.println("First product text: " + product.get(0).getText());
             String firstProductText = product.get(0).getText();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("outputProduct.txt", true))) {
             writer.write(firstProductText);
@@ -103,7 +103,7 @@ public class SauceDemoProductsPage {
             return firstProductText;
 
         } else {
-        System.out.println("No products found.");
+        // System.out.println("No products found.");
         return "";
         }
     }

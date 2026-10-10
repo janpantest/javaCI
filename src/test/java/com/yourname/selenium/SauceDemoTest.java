@@ -30,7 +30,7 @@ public class SauceDemoTest {
         password = fixture.getPassword();
         baseUrl = fixture.getBaseUrl();
         cartTitle = fixture.getCartTitle();
-        System.out.println(username);
+        // System.out.println(username);
         
     }
 

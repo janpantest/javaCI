@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
@@ -25,8 +25,13 @@ jobs:
       - name: Run Selenium tests
         env:
           CI: true
-          BASE_URL_ICE: ${{ secrets.BASE_URL_ICE }}
-          USER_NAME_ICE: ${{ secrets.USER_NAME_ICE }}
-          PASSWORD_ICE: ${{ secrets.PASSWORD_ICE }}
-        run: mvn clean test -Dtest=IceTestFixture
+        #   BASE_URL_ICE: ${{ secrets.BASE_URL_ICE }}
+        #   USER_NAME_ICE: ${{ secrets.USER_NAME_ICE }}
+        #   PASSWORD_ICE: ${{ secrets.PASSWORD_ICE }}
+        # run: mvn clean test -Dtest=IceTestFixture          
+          
+          BASE_URL: ${{ secrets.BASE_URL }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+        run: mvn clean test -Dtest=SauceDemoTest
         

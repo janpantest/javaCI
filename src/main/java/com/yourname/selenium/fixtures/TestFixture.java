@@ -5,6 +5,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class TestFixture {
 
@@ -14,38 +15,67 @@ public class TestFixture {
     String baseUrl;
     String cartTitle;
 
-    // Method for initializing the WebDriver and other setup tasks
     public WebDriver setUp() {
-        String url = "https://www.saucedemo.com";
+        // Load .env locally if available; CI uses environment variables.
+        Dotenv dotenv = Dotenv.configure()
+                .ignoreIfMissing()
+                .load();
 
-        // WebDriverManager.edgedriver().setup(); // Manage WebDriver binary for Edge
-        WebDriverManager.chromedriver().setup();
-        // driver = new EdgeDriver();
-        driver = new FirefoxDriver();
-        driver.manage().window().maximize();
-        driver.get(url);
-
-        Dotenv dotenv = Dotenv.configure().load(); 
-        baseUrl = dotenv.get("BASE_URL");
-        username = dotenv.get("USER_NAME");
-        password = dotenv.get("PASSWORD");
+        baseUrl = getConfig("BASE_URL", dotenv);
+        username = getConfig("USER_NAME", dotenv);
+        password = getConfig("PASSWORD", dotenv);
         cartTitle = "Your Cart";
+
+        // Detect GitHub Actions or another CI environment.
+        boolean isCI = "true".equalsIgnoreCase(System.getenv("CI"));
+
+        FirefoxOptions options = new FirefoxOptions();
+
+        if (isCI) {
+            options.addArguments("-headless");
+            options.addArguments("--width=1920");
+            options.addArguments("--height=1080");
+        }
+
+        WebDriverManager.firefoxdriver().setup();
+
+        // Pass the options to FirefoxDriver.
+        driver = new FirefoxDriver(options);
+        driver.manage().window().maximize();
+        driver.get(baseUrl);
 
         return driver;
     }
 
-    // Cleanup method to quit the driver after tests
+    private String getConfig(String key, Dotenv dotenv) {
+        // Environment variables take priority.
+        String value = System.getenv(key);
+
+        // Fall back to .env for local development.
+        if (value == null || value.isBlank()) {
+            value = dotenv.get(key);
+        }
+
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException(
+                    "Missing configuration: " + key
+                    + ". Set it in GitHub Actions Secrets or your local .env file."
+            );
+        }
+
+        return value;
+    }
+
     public void tearDown() {
         if (driver != null) {
             driver.quit();
         }
     }
 
-    // Getter methods for easy access in tests
     public WebDriver getDriver() {
         return driver;
     }
-    
+
     public String getUsername() {
         return username;
     }
