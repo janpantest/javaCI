@@ -24,7 +24,7 @@ public class IceTestFixture {
         username = fixtureIce.getUsername();
         password = fixtureIce.getPassword();
         baseUrl = fixtureIce.getBaseUrl();
-        System.out.println(username);
+        // System.out.println(username);
         
     }
 
