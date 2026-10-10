@@ -25,8 +25,13 @@ jobs:
       - name: Run Selenium tests
         env:
           CI: true
-          BASE_URL_ICE: ${{ secrets.BASE_URL_ICE }}
-          USER_NAME_ICE: ${{ secrets.USER_NAME_ICE }}
-          PASSWORD_ICE: ${{ secrets.PASSWORD_ICE }}
-        run: mvn clean test -Dtest=IceTestFixture
+        #   BASE_URL_ICE: ${{ secrets.BASE_URL_ICE }}
+        #   USER_NAME_ICE: ${{ secrets.USER_NAME_ICE }}
+        #   PASSWORD_ICE: ${{ secrets.PASSWORD_ICE }}
+        # run: mvn clean test -Dtest=IceTestFixture          
+          
+          BASE_URL: ${{ secrets.BASE_URL_ICE }}
+          USER_NAME: ${{ secrets.USER_NAME_ICE }}
+          PASSWORD: ${{ secrets.PASSWORD_ICE }}
+        run: mvn clean test -Dtest=SauceDemoTest
         
