@@ -32,7 +32,7 @@ public class SauceDemoHomePage {
     }
 
     public boolean isLoginFormVisible() {
-        System.out.println("This is outpout : " + usernameInput.isDisplayed());
+        // System.out.println("This is outpout : " + usernameInput.isDisplayed());
         return usernameInput.isDisplayed() && passwordInput.isDisplayed() && loginButton.isDisplayed();
     }
 }
