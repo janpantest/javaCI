@@ -14,18 +14,18 @@ public class TestFixture {
     String baseUrl;
     String cartTitle;
 
-    // Method for initializing the WebDriver and other setup tasks
     public WebDriver setUp() {
-        // String url = "https://www.saucedemo.com";
-        
-        Dotenv dotenv = Dotenv.configure().load(); 
-        baseUrl = dotenv.get("BASE_URL");
-        username = dotenv.get("USER_NAME");
-        password = dotenv.get("PASSWORD");
+        // Load .env locally if available; CI uses environment variables.
+        Dotenv dotenv = Dotenv.configure()
+                .ignoreIfMissing()
+                .load();
+
+        baseUrl = getConfig("BASE_URL", dotenv);
+        username = getConfig("USER_NAME", dotenv);
+        password = getConfig("PASSWORD", dotenv);
         cartTitle = "Your Cart";
 
-        // WebDriverManager.edgedriver().setup(); // Manage WebDriver binary for Edge
-        WebDriverManager.firefoxdriver().setup();        // driver = new EdgeDriver();
+        WebDriverManager.firefoxdriver().setup();
         driver = new FirefoxDriver();
         driver.manage().window().maximize();
         driver.get(baseUrl);
@@ -33,18 +33,35 @@ public class TestFixture {
         return driver;
     }
 
-    // Cleanup method to quit the driver after tests
+    private String getConfig(String key, Dotenv dotenv) {
+        // Environment variables take priority in GitHub Actions.
+        String value = System.getenv(key);
+
+        // Fall back to .env for local development.
+        if (value == null || value.isBlank()) {
+            value = dotenv.get(key);
+        }
+
+        if (value == null || value.isBlank()) {
+            throw new IllegalStateException(
+                    "Missing configuration: " + key
+                    + ". Set it in GitHub Actions Secrets or your local .env file."
+            );
+        }
+
+        return value;
+    }
+
     public void tearDown() {
         if (driver != null) {
             driver.quit();
         }
     }
 
-    // Getter methods for easy access in tests
     public WebDriver getDriver() {
         return driver;
     }
-    
+
     public String getUsername() {
         return username;
     }
