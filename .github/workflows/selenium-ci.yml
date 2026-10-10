@@ -30,8 +30,8 @@ jobs:
         #   PASSWORD_ICE: ${{ secrets.PASSWORD_ICE }}
         # run: mvn clean test -Dtest=IceTestFixture          
           
-          BASE_URL: ${{ secrets.BASE_URL_ICE }}
-          USER_NAME: ${{ secrets.USER_NAME_ICE }}
-          PASSWORD: ${{ secrets.PASSWORD_ICE }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
         run: mvn clean test -Dtest=SauceDemoTest
         
