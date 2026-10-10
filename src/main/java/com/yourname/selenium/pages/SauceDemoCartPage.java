@@ -50,7 +50,7 @@ public class SauceDemoCartPage {
 
     public void checkProductName(String productName) {
         String cartProductName = product.get(0).getText();
-        System.out.println("Product in cart: " + cartProductName);
+        // System.out.println("Product in cart: " + cartProductName);
 
         cartProductName.equals(productName);
     }
